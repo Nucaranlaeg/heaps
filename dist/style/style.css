@@ -1,0 +1,22 @@
+:root {
+  --cell-size: 12px;
+}
+
+body {
+  background: #113333;
+  user-select: none;
+  color: #cccccc;
+}
+
+#templates {
+  display: none;
+}
+
+.panel {
+  width: 300px;
+}
+.panel .panel-box {
+  width: 100%;
+}
+
+/*# sourceMappingURL=style.css.map */

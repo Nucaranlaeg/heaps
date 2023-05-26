@@ -11,3 +11,11 @@ body {
 #templates {
 	display: none;
 }
+
+.panel {
+	width: 300px;
+
+	.panel-box {
+		width: 100%;
+	}
+}

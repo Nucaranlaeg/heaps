@@ -1,10 +1,14 @@
 {
   "scripts": {
-    "sass": "sass --watch src/script/ dist/script/",
-    "ts": "tsc --watch",
-    "watch": "npm run sass && npm run ts"
+    "sass": "sass src/style/:dist/style/",
+    "sass-w": "sass src/style/:dist/style/ --watch",
+    "ts": "tsc",
+    "ts-w": "tsc --watch",
+    "build": "npm run sass && npm run ts",
+    "watch": "npm run sass && npm run ts-w"
   },
   "devDependencies": {
+    "minify-ts": "^1.0.3",
     "typescript": "^5.0.4"
   },
   "dependencies": {
