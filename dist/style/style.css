@@ -12,11 +12,94 @@ body {
   display: none;
 }
 
+#heaps {
+  width: 400px;
+  position: relative;
+}
+#heaps #next-heap-cost {
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .panel {
-  width: 300px;
+  width: 150px;
+  min-height: 500px;
+  border: 1px solid #45c9c9;
+  display: inline-block;
+  overflow: clip;
+  vertical-align: top;
+  position: relative;
 }
 .panel .panel-box {
   width: 100%;
+}
+.panel h3 {
+  margin: 5px;
+  text-align: center;
+}
+
+#grid-view {
+  position: relative;
+}
+#grid-view .cell {
+  position: absolute;
+  height: 50px;
+  width: 50px;
+  border: 1px solid black;
+  cursor: pointer;
+  text-align: center;
+  line-height: 50px;
+  font-size: small;
+}
+#grid-view .cell.build {
+  border: none;
+  font-size: large;
+  font-weight: bolder;
+}
+#grid-view .cell.sand-gain {
+  border-radius: 20%;
+}
+#grid-view .cell.ready {
+  font-weight: bold;
+  color: #5f5f20;
+}
+#grid-view .cell.selected-heap {
+  background-color: #205f5f;
+}
+
+.description {
+  display: none;
+}
+
+.upgrade {
+  display: block;
+  cursor: pointer;
+  position: relative;
+  padding: 3px;
+}
+.upgrade .cost {
+  position: absolute;
+  right: 3px;
+}
+.upgrade.delete {
+  position: absolute;
+  bottom: 3px;
+  color: #ff0000;
+}
+.upgrade.delete .cost {
+  display: none;
+}
+
+.resource {
+  display: block;
+  position: relative;
+  padding: 3px;
+}
+.resource .count {
+  position: absolute;
+  right: 3px;
 }
 
 /*# sourceMappingURL=style.css.map */

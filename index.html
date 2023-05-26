@@ -6,7 +6,11 @@
 	<!--Dependencies-->
 	<script type="text/javascript" defer src="dependencies/lz-string/lz-string.min.js"></script>
 	<!--Game code-->
-	<script type="text/javascript" defer src="dist/script/upgrades.js"></script>
+	<script type="text/javascript" defer src="dist/script/util.js"></script>
+	<script type="text/javascript" defer src="dist/script/draw.js"></script>
+	<script type="text/javascript" defer src="dist/script/upgrade.js"></script>
+	<script type="text/javascript" defer src="dist/script/fixed_heaps.js"></script>
+	<script type="text/javascript" defer src="dist/script/heap.js"></script>
 	<script type="text/javascript" defer src="dist/script/main.js"></script>
 </head>
 
@@ -16,22 +20,34 @@
 			<div class="name"></div>
 			<div class="cost"></div>
 		</div>
-		<div id="upgrade-template" class="upgrade">
-			<div class="name"></div>
-			<div class="cost"></div>
-		</div>
 		<span id="resource-template" class="resource">
 			<span class="name"></span>
 			<span class="count"></span>
 		</span>
+		<span id="upgrade-template" class="upgrade">
+			<span class="name"></span>
+			<span class="description"></span>
+			<span class="cost"></span>
+		</span>
+		<div id="cell-template" class="cell">
+			<span class="count"></span>
+		</div>
+		<div id="build-template" class="cell build">+</div>
 	</div>
-	<div id="heaps" class="panel"></div>
-	<div id="total-panel" class="panel">
-		<div id="total-stats" class="panel-box"></div>
+	<div id="heaps" class="panel">
+		<div id="grid-view" style="transform: translateX(178px) translateY(188px)"></div>
+		<div id="next-heap-cost">Next heap: <span class="cost">5</span> sand</div>
+	</div>
+	<div id="selection-upgrades-panel" class="panel">
+		<h3>Upgrades</h3>
 		<div id="selection-upgrades" class="panel-box"></div>
 	</div>
-	<div id="selection-panel" class="panel">
+	<div id="selection-stats-panel" class="panel">
+		<h3>Selection</h3>
 		<div id="selection-stats" class="panel-box"></div>
-		<div id="selection-upgrades" class="panel-box"></div>
+	</div>
+	<div id="total-panel" class="panel">
+		<h3>Total</h3>
+		<div id="total-stats" class="panel-box"></div>
 	</div>
 </body>

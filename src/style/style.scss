@@ -1,21 +1,124 @@
+$bgcolour: #113333;
+$bordercolour: #45c9c9;
+$dangercolour: #ff0000;
+$upgradecolour: #5f5f20;
+$selectedcolour: #205f5f;
+$textcolour: #cccccc;
+
+$cellsize: 50px;
+
 :root {
 	--cell-size: 12px;
 }
 
 body {
-	background: #113333;
+	background: $bgcolour;
 	user-select: none;
-	color: #cccccc;
+	color: $textcolour;
 }
 
 #templates {
 	display: none;
 }
 
+#heaps {
+	width: 400px;
+	position: relative;
+
+	#next-heap-cost {
+		position: absolute;
+		bottom: 5px;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+}
+
 .panel {
-	width: 300px;
+	width: 150px;
+	min-height: 500px;
+	border: 1px solid $bordercolour;
+	display: inline-block;
+	overflow: clip;
+	vertical-align: top;
+	position: relative;
 
 	.panel-box {
 		width: 100%;
+	}
+
+	h3 {
+		margin: 5px;
+		text-align: center;
+	}
+}
+
+#grid-view {
+	position: relative;
+
+	.cell {
+		position: absolute;
+		height: $cellsize;
+		width: $cellsize;
+		border: 1px solid black;
+		cursor: pointer;
+		text-align: center;
+		line-height: $cellsize;
+		font-size: small;
+
+		&.build {
+			border: none;
+			font-size: large;
+			font-weight: bolder;
+		}
+
+		&.sand-gain {
+			border-radius: 20%;
+		}
+
+		&.ready {
+			font-weight: bold;
+			color: $upgradecolour;
+		}
+
+		&.selected-heap {
+			background-color: $selectedcolour;
+		}
+	}
+}
+
+.description {
+	display: none;
+}
+
+.upgrade {
+	display: block;
+	cursor: pointer;
+	position: relative;
+	padding: 3px;
+
+	.cost {
+		position: absolute;
+		right: 3px;
+	}
+
+	&.delete {
+		position: absolute;
+		bottom: 3px;
+		color: $dangercolour;
+
+		.cost {
+			display: none;
+		}
+	}
+}
+
+.resource {
+	display: block;
+	position: relative;
+	padding: 3px;
+
+	.count {
+		position: absolute;
+		right: 3px;
 	}
 }
