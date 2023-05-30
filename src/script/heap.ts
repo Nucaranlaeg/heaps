@@ -2,6 +2,7 @@ const ADJACENT_HEAPS = 4;
 const HEAP_BASE_COST = 5;
 
 let heapChanges = false;
+let heapCostMult = 1;
 
 class Heap {
 	adjacent: Heap[] = [];
@@ -9,6 +10,7 @@ class Heap {
 	incomingSand: number = 0;
 	node: HTMLElement | null = null;
 	upgrades: Upgrade[] = [];
+	upgradesBought: number[] = [];
 	sand: number = 0;
 	sandWall: number = 0;
 	sandMove: number = 0.01;
@@ -56,17 +58,31 @@ class Heap {
 	}
 }
 
-class SandGainHeap extends Heap {
-	upgradesBought: number = 0;
+abstract class AutoHeap extends Heap {	
+	constructor(x: number, y: number, type: HEAP_TYPE){
+		super(x, y, type);
+	}
+
+	sandOutflow(){
+		return 0;
+	}
+	tick(){
+		this.upgrades[0].upgrade(this, "buy");
+	}
+}
+
+class SandGainHeap extends AutoHeap {
 	constructor(x: number, y: number){
 		super(x, y, HEAP_TYPE.SAND_GAIN);
 		this.upgrades = [upgrades.increaseSandGain];
 	}
-	
-	sandOutflow(){
-		return 0;
+}
+
+class ExtraHeapsHeap extends AutoHeap {
+	constructor(x: number, y: number){
+		super(x, y, HEAP_TYPE.EXTRA_HEAPS);
+		this.upgrades = [upgrades.decreaseHeapCost];
 	}
-	tick(){}
 }
 
 function getAdjacentHeaps(x: number, y: number): Heap[]{
@@ -92,6 +108,9 @@ function addHeap(x: number, y: number, heapType: HEAP_TYPE = HEAP_TYPE.STANDARD)
 		case HEAP_TYPE.SAND_GAIN:
 			newHeap = new SandGainHeap(x, y);
 			break;
+		case HEAP_TYPE.EXTRA_HEAPS:
+			newHeap = new ExtraHeapsHeap(x, y);
+			break;
 		default:
 			throw new Error("Attempted to create invalid heap type.");
 	}
@@ -101,7 +120,7 @@ function addHeap(x: number, y: number, heapType: HEAP_TYPE = HEAP_TYPE.STANDARD)
 }
 
 function tryBuyHeap(action: "buy" | "get"){
-	const heapCost = Math.pow(HEAP_BASE_COST, heaps.filter(h => h.heapType === HEAP_TYPE.STANDARD).length);
+	const heapCost = Math.pow(HEAP_BASE_COST, heaps.filter(h => h.heapType === HEAP_TYPE.STANDARD).length) * heapCostMult;
 	if (action === "get") return heapCost;
 	if ((getHeap(0,0)?.sand || 0) > heapCost){
 		getHeap(0,0)!.sand -= heapCost;
@@ -113,6 +132,13 @@ function tryBuyHeap(action: "buy" | "get"){
 let heapViewTasks: (() => void)[] = [];
 
 function selectHeap(heap: Heap){
+	heap.adjacent = getAdjacentHeaps(heap.x, heap.y);
+	heapViewTasks.push(() => {
+		if (heapChanges){
+			heap.adjacent = getAdjacentHeaps(heap.x, heap.y);
+		}
+	});
+
 	const selectionStats = document.querySelector("#selection-stats")! as HTMLElement;
 	const selectionUpgrades = document.querySelector("#selection-upgrades")! as HTMLElement;
 	if (!clearNode(selectionStats)) return;

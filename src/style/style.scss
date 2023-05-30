@@ -1,5 +1,6 @@
 $bgcolour: #113333;
 $bordercolour: #45c9c9;
+$centrecolour: #0d2614;
 $dangercolour: #ff0000;
 $upgradecolour: #5f5f20;
 $selectedcolour: #205f5f;
@@ -75,9 +76,17 @@ body {
 			border-radius: 20%;
 		}
 
+		&.extra-heaps {
+			border-style: dashed;
+		}
+
 		&.ready {
 			font-weight: bold;
 			color: $upgradecolour;
+		}
+
+		&.centre {
+			background-color: $centrecolour;
 		}
 
 		&.selected-heap {

@@ -17,7 +17,9 @@ function clearNode(node: HTMLElement){
 	return true;
 }
 
+
 const enum HEAP_TYPE {
 	STANDARD = 0,
 	SAND_GAIN = 1,
+	EXTRA_HEAPS = 2,
 }

@@ -2,12 +2,14 @@
 const ADJACENT_HEAPS = 4;
 const HEAP_BASE_COST = 5;
 let heapChanges = false;
+let heapCostMult = 1;
 class Heap {
     constructor(x, y, type = 0 /* HEAP_TYPE.STANDARD */) {
         this.adjacent = [];
         this.incomingSand = 0;
         this.node = null;
         this.upgrades = [];
+        this.upgradesBought = [];
         this.sand = 0;
         this.sandWall = 0;
         this.sandMove = 0.01;
@@ -49,16 +51,28 @@ class Heap {
         }
     }
 }
-class SandGainHeap extends Heap {
-    constructor(x, y) {
-        super(x, y, 1 /* HEAP_TYPE.SAND_GAIN */);
-        this.upgradesBought = 0;
-        this.upgrades = [upgrades.increaseSandGain];
+class AutoHeap extends Heap {
+    constructor(x, y, type) {
+        super(x, y, type);
     }
     sandOutflow() {
         return 0;
     }
-    tick() { }
+    tick() {
+        this.upgrades[0].upgrade(this, "buy");
+    }
+}
+class SandGainHeap extends AutoHeap {
+    constructor(x, y) {
+        super(x, y, 1 /* HEAP_TYPE.SAND_GAIN */);
+        this.upgrades = [upgrades.increaseSandGain];
+    }
+}
+class ExtraHeapsHeap extends AutoHeap {
+    constructor(x, y) {
+        super(x, y, 2 /* HEAP_TYPE.EXTRA_HEAPS */);
+        this.upgrades = [upgrades.decreaseHeapCost];
+    }
 }
 function getAdjacentHeaps(x, y) {
     return [
@@ -82,6 +96,9 @@ function addHeap(x, y, heapType = 0 /* HEAP_TYPE.STANDARD */) {
         case 1 /* HEAP_TYPE.SAND_GAIN */:
             newHeap = new SandGainHeap(x, y);
             break;
+        case 2 /* HEAP_TYPE.EXTRA_HEAPS */:
+            newHeap = new ExtraHeapsHeap(x, y);
+            break;
         default:
             throw new Error("Attempted to create invalid heap type.");
     }
@@ -90,7 +107,7 @@ function addHeap(x, y, heapType = 0 /* HEAP_TYPE.STANDARD */) {
     heapChanges = true;
 }
 function tryBuyHeap(action) {
-    const heapCost = Math.pow(HEAP_BASE_COST, heaps.filter(h => h.heapType === 0 /* HEAP_TYPE.STANDARD */).length);
+    const heapCost = Math.pow(HEAP_BASE_COST, heaps.filter(h => h.heapType === 0 /* HEAP_TYPE.STANDARD */).length) * heapCostMult;
     if (action === "get")
         return heapCost;
     if ((getHeap(0, 0)?.sand || 0) > heapCost) {
@@ -101,6 +118,12 @@ function tryBuyHeap(action) {
 }
 let heapViewTasks = [];
 function selectHeap(heap) {
+    heap.adjacent = getAdjacentHeaps(heap.x, heap.y);
+    heapViewTasks.push(() => {
+        if (heapChanges) {
+            heap.adjacent = getAdjacentHeaps(heap.x, heap.y);
+        }
+    });
     const selectionStats = document.querySelector("#selection-stats");
     const selectionUpgrades = document.querySelector("#selection-upgrades");
     if (!clearNode(selectionStats))

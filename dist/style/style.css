@@ -61,9 +61,15 @@ body {
 #grid-view .cell.sand-gain {
   border-radius: 20%;
 }
+#grid-view .cell.extra-heaps {
+  border-style: dashed;
+}
 #grid-view .cell.ready {
   font-weight: bold;
   color: #5f5f20;
+}
+#grid-view .cell.centre {
+  background-color: #0d2614;
 }
 #grid-view .cell.selected-heap {
   background-color: #205f5f;

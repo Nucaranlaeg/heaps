@@ -26,9 +26,12 @@ function redraw() {
             h.node.style.left = `${CELL_SIZE * h.y}px`;
             const className = h.heapType === 0 /* HEAP_TYPE.STANDARD */ ? "" :
                 h.heapType === 1 /* HEAP_TYPE.SAND_GAIN */ ? "sand-gain" :
-                    "";
+                    h.heapType === 2 /* HEAP_TYPE.EXTRA_HEAPS */ ? "extra-heaps" :
+                        "";
             if (className !== "")
                 h.node.classList.add(className);
+            if (h.x === 0 && h.y === 0)
+                h.node.classList.add("centre");
             h.node.onclick = () => selectHeap(h);
         }
         heapPanel.appendChild(h.node);
@@ -90,7 +93,7 @@ function drawTotalStats() {
     outflowNode.removeAttribute("id");
     outflowNode.querySelector(".name").innerHTML = "Outflow";
     heapViewTasks.push(() => {
-        const outflow = heaps.reduce((a, c) => a + (c.heapType === 0 /* HEAP_TYPE.STANDARD */ ? c.sandOutflow("void") * (ADJACENT_HEAPS - c.adjacent.filter(h => h.heapType === 0 /* HEAP_TYPE.STANDARD */).length) : 0), 0) / TIME_FACTOR;
+        const outflow = heaps.reduce((a, c) => a + (c.heapType === 0 /* HEAP_TYPE.STANDARD */ ? c.sandOutflow("void") * c.adjacent.filter(h => h.heapType !== 0 /* HEAP_TYPE.STANDARD */).length : 0), 0) / TIME_FACTOR;
         outflowNode.querySelector(".count").innerHTML = writeNumber(outflow, 2) + "/s";
     });
     totalStats.appendChild(outflowNode);

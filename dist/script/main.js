@@ -11,7 +11,7 @@ function tick(loopsThisTick = 0) {
     if (Date.now() - lastTick < TICK_LENGTH)
         return;
     lastTick += TICK_LENGTH;
-    heaps.forEach(h => h.heapType === 0 /* HEAP_TYPE.STANDARD */ && h.tick());
+    heaps.forEach(h => h.tick());
     heaps.forEach(h => h.cleanupTick());
     heapChanges = false;
     if (loopsThisTick < 10) {
